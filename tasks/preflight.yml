@@ -1,11 +1,10 @@
 ---
-- name: Fail when docker not running
-  service:
-    name: docker
-    state: started
-  register: __docker_status
-  tags:
-    - skip_ansible_lint
+- name: Check status of docker service
+  service_facts:
 
-- debug:
-    var: __docker_status
+- name: Fail docker service not running
+  fail:
+    msg: >
+      minikube driver selected as docker but docker service  is not running
+  when:
+    - minikube_driver == "docker" and ansible_facts.services["docker.service"].state == "stopped"

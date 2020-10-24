@@ -12,7 +12,7 @@ All variables in [default/main.yml](defaults/main.yml) can be overrided
 
 | Name           | Default Value | Description                        |
 | -------------- | ------------- | -----------------------------------|
-|`minikube_driver`| docker | minikube driver options|
+|`minikube_driver`| docker | minikube [driver options](https://minikube.sigs.k8s.io/docs/drivers/)|
 
 ## Dependencies
 
