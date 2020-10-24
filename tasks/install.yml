@@ -17,6 +17,13 @@
     home: /
   when: _minikube_system_user != "root"
 
+- name: Add minikube user to docker user group
+  user:
+    name: "{{ _minikube_system_user }}"
+    groups: "docker"
+    append: yes
+  when: minikube_driver == "docker"
+
 - block:
     - name: Download minikube binary to local folder
       become: false
