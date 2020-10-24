@@ -48,4 +48,4 @@
       when: not ansible_check_mode
 
 - name: Start minikube cluster
-  command: minikube start --driver=docker
+  command: "{{ _minikube_install_dir }}/minikube start --driver={{minikube_driver}}"
