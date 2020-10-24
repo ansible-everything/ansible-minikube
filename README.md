@@ -32,6 +32,8 @@ git submodule add -b main https://github.com/slashpai/ansible-minikube.git roles
     -minikube
 ```
 
+Example [playbook](https://github.com/slashpai/ansible_playbooks/tree/main/minikube)
+
 To get role updates
 
 ```bash
