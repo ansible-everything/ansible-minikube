@@ -1,0 +1,11 @@
+---
+- name: Fail when docker not running
+  service:
+    name: docker
+    state: started
+  register: __docker_status
+  tags:
+    - skip_ansible_lint
+
+- debug:
+    var: __docker_status

@@ -1,0 +1,5 @@
+---
+# vars file for minikube
+_minikube_install_dir: "/usr/local/bin"
+_minikube_system_group: "minikube"
+_minikube_system_user: "{{ _minikube_system_group }}"

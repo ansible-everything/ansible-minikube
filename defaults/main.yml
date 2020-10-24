@@ -1,0 +1,4 @@
+---
+# defaults file for minikube
+
+minikube_driver: docker

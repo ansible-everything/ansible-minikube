@@ -1,0 +1,44 @@
+---
+- name: Create the minikube group
+  group:
+    name: "{{ _minikube_system_group }}"
+    state: present
+    system: true
+  when: _minikube_system_group != "root"
+
+- name: Create the minikube user
+  user:
+    name: "{{ _minikube_system_user }}"
+    groups: "{{ _minikube_system_group }}"
+    append: true
+    shell: /usr/sbin/nologin
+    system: true
+    create_home: false
+    home: /
+  when: _minikube_system_user != "root"
+
+- block:
+    - name: Download minikube binary to local folder
+      become: false
+      get_url:
+        url: "https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64"
+        dest: "/tmp/minikube"
+        mode: '0644'
+      register: _download_binary
+      until: _download_binary is succeeded
+      retries: 5
+      delay: 2
+      delegate_to: localhost
+      check_mode: false
+
+    - name: Propagate minikube binaries
+      copy:
+        src: "/tmp/minikube"
+        dest: "{{ _minikube_install_dir }}/minikube"
+        mode: 0755
+        owner: root
+        group: root
+      when: not ansible_check_mode
+
+- name: Start minikube cluster
+  command: minikube start --driver=docker
