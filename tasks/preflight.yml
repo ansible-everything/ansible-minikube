@@ -8,3 +8,12 @@
       minikube driver selected as docker but docker service  is not running
   when:
     - minikube_driver == "docker" and ansible_facts.services["docker.service"].state == "stopped"
+
+- block:
+  - name: Get latest version number from github
+    set_fact:
+       _latest: "{{ lookup('url', 'https://storage.googleapis.com/kubernetes-release/release/stable.txt') | string }}"
+    run_once: true
+  - debug:
+      var: _latest
+  delegate_to: localhost

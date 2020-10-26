@@ -51,7 +51,7 @@
     - name: Download kubectl latest binary to local folder
       become: false
       get_url:
-        url: "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+        url: "https://storage.googleapis.com/kubernetes-release/release/{{_latest}}/bin/linux/amd64/kubectl"
         dest: "/tmp/kubectl"
         mode: '0644'
       register: _download_binary
