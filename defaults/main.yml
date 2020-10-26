@@ -2,3 +2,7 @@
 # defaults file for minikube
 
 minikube_driver: docker
+
+kubectl_version: latest
+
+kubectl_install: false

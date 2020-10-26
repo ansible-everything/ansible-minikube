@@ -5,6 +5,8 @@ Configure minikube cluster
 ## Requirements
 
 * Ansible >= 2.9 (Earlier versions may work, but I haven't tested)
+* Python 3 installed
+* This is tested only in Ubuntu, but should work in linux based systems
 
 ## Role Variables
 
@@ -13,6 +15,8 @@ All variables in [default/main.yml](defaults/main.yml) can be overrided
 | Name           | Default Value | Description                        |
 | -------------- | ------------- | -----------------------------------|
 |`minikube_driver`| docker | minikube [driver options](https://minikube.sigs.k8s.io/docs/drivers/)|
+|`kubectl_install`|false| Flag to specify kubectl installation|
+|`kubectl_version`| latest | kubectl version to install|
 
 ## Dependencies
 

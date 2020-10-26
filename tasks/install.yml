@@ -47,6 +47,44 @@
         group: root
       when: not ansible_check_mode
 
-- name: Start minikube cluster
-  command: "{{ _minikube_install_dir }}/minikube start --driver={{minikube_driver}}"
-  become: 'minikube'
+- block:
+    - name: Download kubectl latest binary to local folder
+      become: false
+      get_url:
+        url: "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+        dest: "/tmp/kubectl"
+        mode: '0644'
+      register: _download_binary
+      until: _download_binary is succeeded
+      retries: 5
+      delay: 2
+      delegate_to: localhost
+      check_mode: false
+      when: kubectl_install and kubectl_version == "latest"
+
+    - name: Download kubectl specified version binary to local folder
+      become: false
+      get_url:
+        url: "https://storage.googleapis.com/kubernetes-release/release/v{{kubectl_version}}/bin/linux/amd64/kubectl"
+        dest: "/tmp/kubectl"
+        mode: '0644'
+      register: _download_binary
+      until: _download_binary is succeeded
+      retries: 5
+      delay: 2
+      delegate_to: localhost
+      check_mode: false
+      when: kubectl_install and kubectl_version != "latest"
+
+    - name: Propagate kubectl binary
+      copy:
+        src: "/tmp/kubectl"
+        dest: "{{ _kubectl_install_dir }}/kubectl"
+        mode: 0755
+        owner: root
+        group: root
+      when: kubectl_install
+
+    - name: Start minikube cluster
+      command: "{{ _minikube_install_dir }}/minikube start --driver={{minikube_driver}}"
+      become: 'minikube'
